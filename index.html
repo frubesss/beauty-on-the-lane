@@ -106,16 +106,6 @@
             font-weight: 300;
             letter-spacing: 1px;
         }
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-        .gallery img {
-            width: 100%;
-            height: auto;
-            border-radius: 4px;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -198,12 +188,7 @@
         </section>
         <section id="gallery">
             <h2>Gallery</h2>
-            <div class="gallery">
-                <img src="images/gallery1.jpg" alt="Salon interior">
-                <img src="images/gallery2.jpg" alt="Facial treatment">
-                <img src="images/gallery3.jpg" alt="Manicure service">
-                <img src="images/gallery4.jpg" alt="Relaxing massage">
-            </div>
+            <p>Visit us in person to see our beautiful salon space and experience our relaxing atmosphere. We look forward to welcoming you to Beauty on the Lane.</p>
         </section>
         <section id="treatments">
             <h2>Treatments &amp; Prices</h2>
@@ -250,7 +235,8 @@
         </section>
         <section id="contact">
             <h2>Contact Us</h2>
-            <form action="#" method="post">
+            <form action="mailto:enquiries@carolineandco.co.uk" method="post" enctype="text/plain">
+                <p><strong>Note:</strong> This form will open your email client. For faster response, please call us directly at <a href="tel:01513430877">0151 343 0877</a>.</p>
                 <label for="first_name">First Name</label>
                 <input id="first_name" type="text" name="first_name" required>
                 <label for="last_name">Last Name</label>
