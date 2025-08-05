@@ -38,142 +38,275 @@
         }
     </script>
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
             margin: 0;
-            font-family: Georgia, "Times New Roman", serif;
-            background: #e8e8e8;
-            color: #4a4a4a;
+            font-family: 'Georgia', 'Garamond', serif;
+            background: linear-gradient(135deg, #F8F0F8 0%, #F0E8F0 100%);
+            color: #4a3a4a;
+            line-height: 1.6;
         }
         a {
-            color: #6a6a6a;
-            text-decoration: underline;
+            color: #8B4B6B;
+            text-decoration: none;
+            transition: color 0.3s ease;
         }
         a:hover {
-            color: #4a4a4a;
+            color: #C4A484;
+            text-decoration: underline;
         }
-        header, footer {
-            background: #d8d8d8;
-            color: #4a4a4a;
+        header {
+            background: linear-gradient(135deg, #F8E8F8 0%, #E8D8E8 50%, #F0E0F0 100%);
+            color: #4a3a4a;
             text-align: center;
-            padding: 2rem 1rem;
+            padding: 3rem 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(139, 75, 107, 0.1);
+            position: relative;
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #C4A484, #8B4B6B, #A58BA5);
         }
         .logo {
-            max-width: 300px;
+            max-width: 350px;
             height: auto;
-            margin-bottom: 1rem;
-        }
-        header h1, footer p {
-            margin: 0.5rem 0;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 2px 4px rgba(139, 75, 107, 0.1));
         }
         header h1 {
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             font-weight: 300;
-            letter-spacing: 2px;
-            margin-top: 1rem;
+            letter-spacing: 3px;
+            margin: 1rem 0;
+            color: #8B4B6B;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        header p {
+            margin: 0.75rem 0;
+            font-size: 1.1rem;
+        }
+        nav {
+            margin-top: 1.5rem;
         }
         nav a {
-            margin: 0 0.5rem;
-            font-weight: normal;
-            color: #6a6a6a;
+            margin: 0 1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            background: rgba(196, 164, 132, 0.1);
+            transition: all 0.3s ease;
         }
         nav a:hover {
-            color: #4a4a4a;
+            background: rgba(139, 75, 107, 0.1);
+            transform: translateY(-1px);
+            text-decoration: none;
         }
         main {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 2rem 1rem;
+            padding: 3rem 1rem;
         }
         article section {
-            background: #f5f5f5;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid #d0d0d0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(139, 75, 107, 0.1);
+            border: 1px solid rgba(196, 164, 132, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        article section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(139, 75, 107, 0.15);
         }
         h2 {
-            margin: 0 0 1rem;
-            font-size: 1.5rem;
-            border-bottom: 2px solid #b8b8b8;
-            padding-bottom: 0.5rem;
-            color: #4a4a4a;
-            font-weight: 300;
-            letter-spacing: 1px;
+            margin: 0 0 1.5rem;
+            font-size: 2rem;
+            color: #8B4B6B;
+            font-weight: 400;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #C4A484, #8B4B6B);
+            border-radius: 2px;
         }
         h3 {
-            margin-top: 2rem;
-            font-size: 1.25rem;
-            color: #4a4a4a;
-            font-weight: 300;
+            margin: 2rem 0 1rem;
+            font-size: 1.4rem;
+            color: #A58BA5;
+            font-weight: 400;
             letter-spacing: 1px;
         }
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
         .gallery img {
             width: 100%;
-            height: auto;
-            border-radius: 4px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(139, 75, 107, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .gallery img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(139, 75, 107, 0.3);
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(139, 75, 107, 0.1);
         }
         th, td {
-            border: 1px solid #c0c0c0;
-            padding: 0.75rem;
+            padding: 1rem 1.25rem;
             text-align: left;
             vertical-align: top;
+            border: none;
         }
         th {
-            background: #d0d0d0;
-            color: #4a4a4a;
+            background: linear-gradient(135deg, #8B4B6B, #A58BA5);
+            color: white;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         tr:nth-child(even) {
-            background: #ececec;
+            background: rgba(248, 240, 248, 0.5);
+        }
+        tr:nth-child(odd) {
+            background: rgba(255, 255, 255, 0.8);
+        }
+        tbody tr:hover {
+            background: rgba(196, 164, 132, 0.1);
+            transform: scale(1.01);
+            transition: all 0.2s ease;
+        }
+        .price-cell {
+            font-weight: 600;
+            color: #8B4B6B;
+            font-size: 1.1rem;
         }
         form {
-            margin-top: 1rem;
-            background: #ececec;
-            padding: 1rem;
-            border: 1px solid #d0d0d0;
+            margin-top: 2rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 240, 248, 0.9));
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(139, 75, 107, 0.1);
+            border: 1px solid rgba(196, 164, 132, 0.2);
         }
         form label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 400;
-            color: #4a4a4a;
+            font-weight: 500;
+            color: #8B4B6B;
+            letter-spacing: 0.5px;
         }
         form input,
-        form textarea,
+        form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid rgba(196, 164, 132, 0.3);
+            font-size: 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-family: inherit;
+        }
+        form input:focus,
+        form textarea:focus {
+            outline: none;
+            border-color: #8B4B6B;
+            box-shadow: 0 0 0 3px rgba(139, 75, 107, 0.1);
+        }
         form button {
             width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border: 1px solid #b8b8b8;
-            font-size: 1rem;
-            box-sizing: border-box;
-            border-radius: 4px;
-            background: #f8f8f8;
-        }
-        form button {
-            background: #6a6a6a;
-            color: #ffffff;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #8B4B6B, #A58BA5);
+            color: white;
             border: none;
             cursor: pointer;
-            font-weight: 300;
+            font-weight: 500;
             letter-spacing: 1px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: 0 4px 16px rgba(139, 75, 107, 0.3);
         }
         form button:hover {
-            background: #4a4a4a;
+            background: linear-gradient(135deg, #A58BA5, #C4A484);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 75, 107, 0.4);
+        }
+        
+        /* Add some sparkle elements */
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        
+        .sparkle {
+            position: relative;
+        }
+        
+        .sparkle::before {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            animation: sparkle 2s infinite;
+            font-size: 0.8rem;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+                letter-spacing: 2px;
+            }
+            main {
+                padding: 2rem 1rem;
+            }
+            article section {
+                padding: 1.5rem;
+            }
+            .gallery {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 1rem;
+            }
+            nav a {
+                margin: 0.25rem;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
 <header>
-    <img src="images/logo.svg" alt="Beauty on the Lane Logo" class="logo">
+    <img src="images/logo_new.png" alt="Beauty on the Lane Logo" class="logo">
     <h1>Beauty Salon in Bromborough</h1>
     <p>
         <a href="https://maps.app.goo.gl/Tuq2adU4kCkPxFYX8" target="_blank" rel="noopener noreferrer">
@@ -205,47 +338,47 @@
                 <img src="images/gallery4.jpg" alt="Relaxing massage">
             </div>
         </section>
-        <section id="treatments">
+        <section id="treatments" class="sparkle">
             <h2>Treatments &amp; Prices</h2>
             <h3 id="facial-treatments">Facial Treatments</h3>
             <table>
                 <tr><th>Treatment</th><th>Description</th><th>Price</th></tr>
-                <tr><td>Pro-Collagen Age Defy</td><td>Targets fine lines and wrinkles for nourished, youthful skin.</td><td>£65</td></tr>
-                <tr><td>Pro-Definition Lift and Contour</td><td>Sculpting facial for lifted contours.</td><td>£65</td></tr>
-                <tr><td>Dynamic Resurfacing Peel</td><td>Resurfacing treatment for dull tone and signs of ageing.</td><td>£65</td></tr>
-                <tr><td>Superfood Pro-Radiance</td><td>Nutrient-rich superfoods energise tired skin.</td><td>£55</td></tr>
-                <tr><td>Sensitive Skin Smoother</td><td>Calms fragile, sensitive skin.</td><td>£55</td></tr>
-                <tr><td>Anti-Blemish Mattify</td><td>Regulates oily skin and clears congestion.</td><td>£55</td></tr>
-                <tr><td>BIOTEC Line Eraser</td><td>Reduces wrinkles using microcurrent and light therapy.</td><td>£60</td></tr>
-                <tr><td>BIOTEC Skin Resurfacing</td><td>Peel, massage and light for clearer tone and skin.</td><td>£60</td></tr>
-                <tr><td>BIOTEC Radiance Renew</td><td>Removes impurities and restores moisture.</td><td>£60</td></tr>
-                <tr><td>BIOTEC Blemish Control</td><td>Deep cleansing with ultrasonic and galvanic therapy.</td><td>£60</td></tr>
-                <tr><td>BIOTEC Sensitive Skin</td><td>Redness reduction and skin repair with oxygen.</td><td>£60</td></tr>
+                <tr><td>Pro-Collagen Age Defy</td><td>Targets fine lines and wrinkles for nourished, youthful skin.</td><td class="price-cell">£65</td></tr>
+                <tr><td>Pro-Definition Lift and Contour</td><td>Sculpting facial for lifted contours.</td><td class="price-cell">£65</td></tr>
+                <tr><td>Dynamic Resurfacing Peel</td><td>Resurfacing treatment for dull tone and signs of ageing.</td><td class="price-cell">£65</td></tr>
+                <tr><td>Superfood Pro-Radiance</td><td>Nutrient-rich superfoods energise tired skin.</td><td class="price-cell">£55</td></tr>
+                <tr><td>Sensitive Skin Smoother</td><td>Calms fragile, sensitive skin.</td><td class="price-cell">£55</td></tr>
+                <tr><td>Anti-Blemish Mattify</td><td>Regulates oily skin and clears congestion.</td><td class="price-cell">£55</td></tr>
+                <tr><td>BIOTEC Line Eraser</td><td>Reduces wrinkles using microcurrent and light therapy.</td><td class="price-cell">£60</td></tr>
+                <tr><td>BIOTEC Skin Resurfacing</td><td>Peel, massage and light for clearer tone and skin.</td><td class="price-cell">£60</td></tr>
+                <tr><td>BIOTEC Radiance Renew</td><td>Removes impurities and restores moisture.</td><td class="price-cell">£60</td></tr>
+                <tr><td>BIOTEC Blemish Control</td><td>Deep cleansing with ultrasonic and galvanic therapy.</td><td class="price-cell">£60</td></tr>
+                <tr><td>BIOTEC Sensitive Skin</td><td>Redness reduction and skin repair with oxygen.</td><td class="price-cell">£60</td></tr>
             </table>
             <h3 id="body-scrubs">Body Scrubs</h3>
             <table>
                 <tr><th>Treatment</th><th>Description</th><th>Price</th></tr>
-                <tr><td>Elemis Salt Scrub</td><td>Choose Lime &amp; Ginger or Frangipani intense cleanse.</td><td>£40</td></tr>
+                <tr><td>Elemis Salt Scrub</td><td>Choose Lime &amp; Ginger or Frangipani intense cleanse.</td><td class="price-cell">£40</td></tr>
             </table>
             <h3 id="facial-body-treatments">Facial &amp; Body Treatments</h3>
             <table>
                 <tr><th>Treatment</th><th>Description</th><th>Price</th></tr>
-                <tr><td>Face Mapping</td><td>14-zone skin analysis to identify concerns.</td><td>£30</td></tr>
-                <tr><td>Prescriptive Facial</td><td>Cleanse, exfoliate, mask and massage tailored to your skin.</td><td>£65</td></tr>
-                <tr><td>Express Facial</td><td>Quick version of the prescriptive facial.</td><td>£45</td></tr>
-                <tr><td>Luxury Back, Face &amp; Scalp</td><td>Facial plus scalp massage and aromatherapy back massage.</td><td>£70</td></tr>
+                <tr><td>Face Mapping</td><td>14-zone skin analysis to identify concerns.</td><td class="price-cell">£30</td></tr>
+                <tr><td>Prescriptive Facial</td><td>Cleanse, exfoliate, mask and massage tailored to your skin.</td><td class="price-cell">£65</td></tr>
+                <tr><td>Express Facial</td><td>Quick version of the prescriptive facial.</td><td class="price-cell">£45</td></tr>
+                <tr><td>Luxury Back, Face &amp; Scalp</td><td>Facial plus scalp massage and aromatherapy back massage.</td><td class="price-cell">£70</td></tr>
             </table>
             <h3 id="massage">Massage</h3>
             <table>
                 <tr><th>Treatment</th><th>Description</th><th>Price</th></tr>
-                <tr><td>Back, Neck &amp; Shoulder</td><td>Custom aromatherapy massage for tension relief.</td><td>£35</td></tr>
-                <tr><td>Luxury BNS</td><td>Includes exfoliation, hot towels, massage.</td><td>£45</td></tr>
-                <tr><td>Deluxe Back Treatment</td><td>Exfoliate, cleanse, massage and mask with hot towels.</td><td>£50</td></tr>
-                <tr><td>Full Body Massage</td><td>Complete aromatherapy massage.</td><td>£50</td></tr>
-                <tr><td>De-stressing Full Body</td><td>Massage including face and scalp.</td><td>£55</td></tr>
-                <tr><td>Indian Head Massage</td><td>Great for migraines, stress, and tension.</td><td>£30</td></tr>
-                <tr><td>Hot Stone Massage</td><td>Uses warm basalt stones to relax deep muscle tension.</td><td>£60</td></tr>
-                <tr><td>Energising Full Body</td><td>Brushing, exfoliation, massage with energising oils.</td><td>£60</td></tr>
+                <tr><td>Back, Neck &amp; Shoulder</td><td>Custom aromatherapy massage for tension relief.</td><td class="price-cell">£35</td></tr>
+                <tr><td>Luxury BNS</td><td>Includes exfoliation, hot towels, massage.</td><td class="price-cell">£45</td></tr>
+                <tr><td>Deluxe Back Treatment</td><td>Exfoliate, cleanse, massage and mask with hot towels.</td><td class="price-cell">£50</td></tr>
+                <tr><td>Full Body Massage</td><td>Complete aromatherapy massage.</td><td class="price-cell">£50</td></tr>
+                <tr><td>De-stressing Full Body</td><td>Massage including face and scalp.</td><td class="price-cell">£55</td></tr>
+                <tr><td>Indian Head Massage</td><td>Great for migraines, stress, and tension.</td><td class="price-cell">£30</td></tr>
+                <tr><td>Hot Stone Massage</td><td>Uses warm basalt stones to relax deep muscle tension.</td><td class="price-cell">£60</td></tr>
+                <tr><td>Energising Full Body</td><td>Brushing, exfoliation, massage with energising oils.</td><td class="price-cell">£60</td></tr>
             </table>
         </section>
         <section id="contact">
