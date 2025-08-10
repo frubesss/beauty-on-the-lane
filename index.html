@@ -166,6 +166,78 @@
         form button:hover {
             background: #4a4a4a;
         }
+        form button:disabled {
+            background: #b8b8b8;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: #d32f2f;
+            font-size: 0.875rem;
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+        .form-field.error input,
+        .form-field.error textarea {
+            border-color: #d32f2f;
+            background: #fff5f5;
+        }
+        .char-count {
+            font-size: 0.875rem;
+            color: #6a6a6a;
+            text-align: right;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+        .checkbox-label input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+            margin-bottom: 0;
+        }
+        #form-status {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 400;
+        }
+        #form-status.success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #4caf50;
+        }
+        #form-status.error {
+            background: #fff5f5;
+            color: #d32f2f;
+            border: 1px solid #f44336;
+        }
+        #form-status.sending {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #2196f3;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #b8b8b8;
+            border-radius: 50%;
+            border-top-color: #1976d2;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -329,19 +401,282 @@
         </section>
         <section id="contact">
             <h2>Contact Us</h2>
-            <form action="mailto:enquiries@carolineandco.co.uk" method="get" enctype="text/plain">
-                <label for="first_name">First Name</label>
-                <input id="first_name" type="text" name="first_name" required>
-                <label for="last_name">Last Name</label>
-                <input id="last_name" type="text" name="last_name" required>
-                <label for="email">Email</label>
+            <form id="contact-form" novalidate>
+                <div id="form-status" style="display: none;"></div>
+                
+                <label for="name">Name *</label>
+                <input id="name" type="text" name="name" required>
+                <div class="error-message" id="name-error"></div>
+                
+                <label for="email">Email *</label>
                 <input id="email" type="email" name="email" required>
-                <label for="message">Message</label>
-                <textarea id="message" name="message" rows="4"></textarea>
-                <button type="submit">Send Message</button>
+                <div class="error-message" id="email-error"></div>
+                
+                <label for="subject">Subject *</label>
+                <input id="subject" type="text" name="subject" required>
+                <div class="error-message" id="subject-error"></div>
+                
+                <label for="message">Message *</label>
+                <textarea id="message" name="message" rows="4" minlength="10" maxlength="4000" required placeholder="Please tell us about your inquiry (10-4000 characters)"></textarea>
+                <div class="error-message" id="message-error"></div>
+                <div class="char-count" id="message-count">0/4000</div>
+                
+                <label class="checkbox-label">
+                    <input type="checkbox" id="sendCopy" name="sendCopy">
+                    Send a copy to my email
+                </label>
+                
+                <!-- Honeypot field for spam protection -->
+                <input type="text" name="_gotcha" style="display: none !important" tabindex="-1" autocomplete="off">
+                
+                <button type="submit" id="submit-btn">Send Message</button>
             </form>
         </section>
     </article>
 </main>
+
+<script>
+// Form-to-email provider abstraction
+class FormProvider {
+    async send(formData) {
+        throw new Error('send() method must be implemented by provider');
+    }
+}
+
+// Formspree provider implementation
+class FormspreeProvider extends FormProvider {
+    constructor(formId) {
+        super();
+        this.formId = formId;
+        this.endpoint = `https://formspree.io/f/${formId}`;
+    }
+    
+    async send(formData) {
+        const response = await fetch(this.endpoint, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json'
+            },
+            body: formData
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Failed to send message');
+        }
+        
+        return await response.json();
+    }
+}
+
+// Configuration - replace with your actual Formspree form ID
+const CONFIG = {
+    provider: new FormspreeProvider('xvgpjqar'), // Demo form ID - replace with actual
+    enableCaptcha: false // Set to true to enable reCAPTCHA (requires additional setup)
+};
+
+// Contact form handler
+class ContactForm {
+    constructor() {
+        this.form = document.getElementById('contact-form');
+        this.statusDiv = document.getElementById('form-status');
+        this.submitBtn = document.getElementById('submit-btn');
+        this.messageTextarea = document.getElementById('message');
+        this.charCount = document.getElementById('message-count');
+        
+        this.init();
+    }
+    
+    init() {
+        this.form.addEventListener('submit', this.handleSubmit.bind(this));
+        this.messageTextarea.addEventListener('input', this.updateCharCount.bind(this));
+        
+        // Real-time validation
+        this.form.querySelectorAll('input, textarea').forEach(field => {
+            field.addEventListener('blur', () => this.validateField(field));
+            field.addEventListener('input', () => this.clearFieldError(field));
+        });
+        
+        this.updateCharCount();
+    }
+    
+    validateField(field) {
+        const value = field.value.trim();
+        const fieldName = field.name;
+        let isValid = true;
+        let errorMessage = '';
+        
+        // Required field validation
+        if (field.hasAttribute('required') && !value) {
+            isValid = false;
+            errorMessage = `${this.getFieldLabel(fieldName)} is required.`;
+        }
+        
+        // Email validation
+        else if (fieldName === 'email' && value) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                isValid = false;
+                errorMessage = 'Please enter a valid email address.';
+            }
+        }
+        
+        // Message length validation
+        else if (fieldName === 'message' && value) {
+            if (value.length < 10) {
+                isValid = false;
+                errorMessage = 'Message must be at least 10 characters long.';
+            } else if (value.length > 4000) {
+                isValid = false;
+                errorMessage = 'Message must be no more than 4000 characters long.';
+            }
+        }
+        
+        this.showFieldError(field, isValid ? null : errorMessage);
+        return isValid;
+    }
+    
+    validateForm() {
+        const fields = this.form.querySelectorAll('input[required], textarea[required]');
+        let isValid = true;
+        
+        fields.forEach(field => {
+            if (!this.validateField(field)) {
+                isValid = false;
+            }
+        });
+        
+        return isValid;
+    }
+    
+    showFieldError(field, message) {
+        const errorDiv = document.getElementById(`${field.name}-error`);
+        if (message) {
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            field.style.borderColor = '#d32f2f';
+            field.style.background = '#fff5f5';
+        } else {
+            errorDiv.classList.remove('show');
+            field.style.borderColor = '';
+            field.style.background = '';
+        }
+    }
+    
+    clearFieldError(field) {
+        const errorDiv = document.getElementById(`${field.name}-error`);
+        if (errorDiv && errorDiv.classList.contains('show')) {
+            errorDiv.classList.remove('show');
+            field.style.borderColor = '';
+            field.style.background = '';
+        }
+    }
+    
+    getFieldLabel(fieldName) {
+        const labels = {
+            name: 'Name',
+            email: 'Email',
+            subject: 'Subject',
+            message: 'Message'
+        };
+        return labels[fieldName] || fieldName;
+    }
+    
+    updateCharCount() {
+        const length = this.messageTextarea.value.length;
+        this.charCount.textContent = `${length}/4000`;
+        
+        if (length > 4000) {
+            this.charCount.style.color = '#d32f2f';
+        } else if (length < 10) {
+            this.charCount.style.color = '#ff9800';
+        } else {
+            this.charCount.style.color = '#6a6a6a';
+        }
+    }
+    
+    showStatus(type, message) {
+        this.statusDiv.className = type;
+        this.statusDiv.style.display = 'block';
+        
+        if (type === 'sending') {
+            this.statusDiv.innerHTML = `<span class="loading-spinner"></span>${message}`;
+        } else {
+            this.statusDiv.textContent = message;
+        }
+        
+        // Auto-hide success/error messages after 10 seconds
+        if (type !== 'sending') {
+            setTimeout(() => {
+                this.statusDiv.style.display = 'none';
+            }, 10000);
+        }
+    }
+    
+    hideStatus() {
+        this.statusDiv.style.display = 'none';
+    }
+    
+    setFormState(isSubmitting) {
+        this.submitBtn.disabled = isSubmitting;
+        this.submitBtn.textContent = isSubmitting ? 'Sending...' : 'Send Message';
+        
+        const fields = this.form.querySelectorAll('input, textarea');
+        fields.forEach(field => {
+            field.disabled = isSubmitting;
+        });
+    }
+    
+    async handleSubmit(e) {
+        e.preventDefault();
+        
+        // Validate form
+        if (!this.validateForm()) {
+            this.showStatus('error', 'Please correct the errors above and try again.');
+            return;
+        }
+        
+        // Check honeypot
+        const honeypot = this.form.querySelector('input[name="_gotcha"]');
+        if (honeypot && honeypot.value) {
+            // Silent fail for spam
+            this.showStatus('success', 'Thank you for your message! We\'ll get back to you soon.');
+            return;
+        }
+        
+        this.setFormState(true);
+        this.showStatus('sending', 'Sending your message...');
+        
+        try {
+            const formData = new FormData(this.form);
+            
+            // Remove honeypot field
+            formData.delete('_gotcha');
+            
+            // Add business context
+            formData.append('_subject', `New contact form submission from ${formData.get('name')}`);
+            formData.append('_cc', formData.get('sendCopy') ? formData.get('email') : '');
+            
+            await CONFIG.provider.send(formData);
+            
+            this.showStatus('success', 'Thank you for your message! We\'ll get back to you soon.');
+            this.form.reset();
+            this.updateCharCount();
+            
+        } catch (error) {
+            console.error('Form submission error:', error);
+            this.showStatus('error', 'Sorry, there was a problem sending your message. Please try again or contact us directly.');
+        } finally {
+            this.setFormState(false);
+        }
+    }
+}
+
+// Initialize form when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    new ContactForm();
+});
+</script>
+
 </body>
 </html>
