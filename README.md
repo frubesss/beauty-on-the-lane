@@ -27,12 +27,32 @@ None. The site is fully static and does not rely on any environment variables.
 / (repo root)
 ├─ CNAME                 # Custom domain for GitHub Pages (beautyonthelane-wirral.co.uk)
 ├─ index.html            # Single-page site (HTML, embedded CSS, metadata, JSON-LD)
+├─ 404.html              # Custom error page (served automatically by GitHub Pages)
+├─ site.webmanifest      # Web app manifest (PWA metadata, icon)
+├─ robots.txt            # Crawler rules, incl. named AI crawler directives + Content-Signal
+├─ sitemap.xml           # XML sitemap
+├─ llms.txt              # Curated index for AI agents/LLMs
+├─ llms-full.txt         # Full page content in markdown, for AI agents/LLMs
+├─ .well-known/
+│  └─ security.txt       # Vulnerability disclosure contact (RFC 9116)
 ├─ images/
-│  ├─ favicon.svg        # Favicon referenced by index.html
+│  ├─ favicon.svg        # Favicon referenced by index.html, site.webmanifest, and 404.html
 │  └─ logo.svg           # Logo referenced by index.html and social tags
 ├─ cover.png             # Optional cover image for docs/README (not used by the site)
 └─ logo.png              # Optional raster logo for docs/README (not used by the site)
 ```
+
+### Content Security Policy
+`index.html` and `404.html` each ship a `Content-Security-Policy` meta tag that allowlists the page's inline `<style>` (and, on `index.html`, the inline JSON-LD `<script>`) by SHA-256 hash rather than `'unsafe-inline'`. **If you edit the contents of a `<style>` or `<script type="application/ld+json">` block, you must recompute its hash and update the matching `sha256-...` value in that page's CSP meta tag**, or the browser will silently refuse to apply the styles/data:
+```
+python3 -c "
+import hashlib, base64, re
+html = open('index.html').read()
+style = re.search(r'<style>(.*?)</style>', html, re.S).group(1)
+print(base64.b64encode(hashlib.sha256(style.encode()).digest()).decode())
+"
+```
+Some security headers (HSTS, X-Content-Type-Options, X-Frame-Options/frame-ancestors, Permissions-Policy, COOP/COEP) cannot be set via `<meta>` and require an HTTP response header — not possible on plain GitHub Pages without a proxy such as Cloudflare in front of the domain.
 
 
 ## Deployment (GitHub Pages)
