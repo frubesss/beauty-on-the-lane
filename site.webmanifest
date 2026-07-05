@@ -1,0 +1,19 @@
+{
+  "name": "Beauty on the Lane",
+  "short_name": "Beauty on the Lane",
+  "description": "Beauty salon in Bromborough, Wirral. Facials, massage, nails, waxing, lashes & more.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#e8e8e8",
+  "theme_color": "#e8e8e8",
+  "lang": "en-GB",
+  "icons": [
+    {
+      "src": "images/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

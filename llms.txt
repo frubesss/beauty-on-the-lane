@@ -1,0 +1,15 @@
+# Beauty on the Lane
+
+> Independent beauty salon at 8 Allport Lane, Bromborough, Wirral, CH62 7HP, UK. Offers facials, massage, manicures, pedicures, gel and builder gel nails, spray tanning, eyebrow/eyelash treatments, and waxing.
+
+Beauty on the Lane is a single-page brochure website. Opening hours are Monday to Friday, 09:00–18:00. Phone: 0151 343 0877. WhatsApp: +44 7742 014037. Email: beautyonthelanewirral@gmail.com.
+
+## Pages
+
+- [Home](https://beautyonthelane-wirral.co.uk/): About the salon, full treatment & price list (massage, Dermalogica facials, Elemis facials, manicure & pedicure, gel bottle polish, builder gel, spray tan, eye treatments, waxing), and a contact form.
+
+## Notes
+
+- This site does not use cookies, analytics, or third-party tracking.
+- Full page content is also available at [/llms-full.txt](https://beautyonthelane-wirral.co.uk/llms-full.txt).
+- Structured data (schema.org BeautySalon) is embedded as JSON-LD on the homepage.

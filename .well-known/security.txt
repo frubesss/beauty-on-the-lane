@@ -1,0 +1,4 @@
+Contact: mailto:beautyonthelanewirral@gmail.com
+Expires: 2027-06-30T23:59:00.000Z
+Preferred-Languages: en
+Canonical: https://beautyonthelane-wirral.co.uk/.well-known/security.txt
