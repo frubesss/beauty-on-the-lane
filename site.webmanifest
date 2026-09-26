@@ -1,7 +1,7 @@
 {
-  "name": "Beauty on the Lane",
+  "name": "Beauty on the Lane Wirral",
   "short_name": "Beauty on the Lane",
-  "description": "Beauty salon in Bromborough, Wirral. Facials, massage, nails, waxing, lashes & more.",
+  "description": "Beauty salon in Bromborough, Wirral. Dermalogica & Elemis facials, massage, nails, lashes, waxing & spray tans.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -13,6 +13,18 @@
       "src": "images/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "images/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any"
     }
   ]
