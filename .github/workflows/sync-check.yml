@@ -1,0 +1,13 @@
+name: Generated content is in sync
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify JSON-LD, CSP hashes, llms files and hours match index.html
+        run: python3 tools/sync-metadata.py --check
