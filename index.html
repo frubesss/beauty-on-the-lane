@@ -2,7 +2,7 @@
 <html lang="en-GB">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-nHier7Jfm0gn9QrVaulgAhOwKtRjJZBvMDy1P6P5Wtg='; style-src 'sha256-ok4GiWkZPLX3/2RQzS3BWKT4FWpprBeBylb9QZtP5Nc='; img-src 'self'; font-src 'self'; manifest-src 'self'; form-action 'self' mailto:; base-uri 'none'; object-src 'none'; frame-src 'none'; upgrade-insecure-requests">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-nHier7Jfm0gn9QrVaulgAhOwKtRjJZBvMDy1P6P5Wtg='; style-src 'sha256-WKyiMLCGJk0m9tBkrNdHuGvdmZc1QM3BpyAh/Pgcw4Y='; img-src 'self'; font-src 'self'; manifest-src 'self'; form-action 'self' mailto:; base-uri 'none'; object-src 'none'; frame-src 'none'; upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Beauty on the Lane Wirral | Beauty Salon in Bromborough</title>
     <meta name="description" content="Independent beauty salon in Bromborough, Wirral: Dermalogica &amp; Elemis facials, massage, gel nails, lashes, waxing &amp; spray tans. Call 0151 343 0877 to book.">
@@ -155,6 +155,13 @@
             border-collapse: collapse;
             margin-top: 1rem;
         }
+        /* Fixed Duration/Price widths so columns line up across every price table */
+        th:nth-child(2):not(:last-child) {
+            width: 7rem;
+        }
+        th:last-child:not(:first-child) {
+            width: 5.5rem;
+        }
         th, td {
             border: 1px solid #c0c0c0;
             padding: 0.75rem;
@@ -167,6 +174,17 @@
         }
         tr:nth-child(even) {
             background: #ececec;
+        }
+        @media (max-width: 600px) {
+            th, td {
+                padding: 0.5rem;
+            }
+            th:nth-child(2):not(:last-child) {
+                width: 4.75rem;
+            }
+            th:last-child:not(:first-child) {
+                width: 3rem;
+            }
         }
         form {
             margin-top: 1rem;
