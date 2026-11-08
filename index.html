@@ -2,7 +2,7 @@
 <html lang="en-GB">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-NT7buQuxmPlPSV4ubwS0WsiRDNzT//zR67BGUi81S8c='; style-src 'sha256-uuN7lUipZD+K27aAtnoM8WMOXTVZ6tOCt5Zf4WpwWRY='; img-src 'self'; font-src 'self'; manifest-src 'self'; form-action 'self' mailto:; base-uri 'none'; object-src 'none'; frame-src 'none'; upgrade-insecure-requests">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-NT7buQuxmPlPSV4ubwS0WsiRDNzT//zR67BGUi81S8c='; style-src 'sha256-3KG+eNRg0xsULOo8s4nhFLyDRNpcCYG1+Y9FnWuIQYY='; img-src 'self'; font-src 'self'; manifest-src 'self'; form-action 'self' https://api.web3forms.com; base-uri 'none'; object-src 'none'; frame-src 'none'; upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Beauty on the Lane Wirral | Beauty Salon in Bromborough</title>
     <meta name="description" content="Independent beauty salon in Bromborough, Wirral: Dermalogica &amp; Elemis facials, massage, gel nails, lashes, waxing &amp; spray tans. Call 0151 343 0877 to book.">
@@ -223,6 +223,18 @@
         }
         form button:hover {
             background: #4a4a4a;
+        }
+        .form-botcheck,
+        .form-success {
+            display: none;
+        }
+        .form-success:target {
+            display: block;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f8f8;
+            border: 1px solid #b8b8b8;
+            border-radius: 4px;
         }
         .skip-link {
             position: absolute;
@@ -455,7 +467,13 @@
         <section id="contact">
             <h2>Contact Us</h2>
             <p>To book, call <a href="tel:01513430877">0151 343 0877</a>, message us on <a href="https://wa.me/447742014037" target="_blank" rel="noopener noreferrer">WhatsApp</a>, or send us a message below. You’ll find us at 8 Allport Lane in Bromborough village, a short drive from Bebington, Port Sunlight and Eastham.</p>
-            <form action="mailto:beautyonthelanewirral@gmail.com" method="get" enctype="text/plain">
+            <p id="message-sent" class="form-success" role="status">Thank you, your message has been sent. We’ll get back to you as soon as we can.</p>
+            <form action="https://api.web3forms.com/submit" method="post">
+                <input type="hidden" name="access_key" value="31ae059e-63ff-48e3-83a8-997a8be849a6">
+                <input type="hidden" name="subject" value="New message from the Beauty on the Lane website">
+                <input type="hidden" name="from_name" value="Beauty on the Lane website">
+                <input type="hidden" name="redirect" value="https://beautyonthelane-wirral.co.uk/#message-sent">
+                <input type="checkbox" name="botcheck" class="form-botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
                 <label for="first_name">First Name</label>
                 <input id="first_name" type="text" name="first_name" autocomplete="given-name" inputmode="text" required>
                 <label for="last_name">Last Name</label>

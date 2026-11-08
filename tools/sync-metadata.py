@@ -283,8 +283,8 @@ def render_llms(page: str, blocks: list, description: str) -> tuple[str, str]:
     full += ["## Contact Us", "",
              f"Use the contact form at {SITE}#contact, or get in touch directly by email, phone, or WhatsApp (details above).", "",
              "## Privacy", "",
-             "This site does not use cookies, analytics, or third-party tracking. The contact form sends an email "
-             "directly via your own email client — it is not submitted to or stored on any server.", ""]
+             "This site does not use cookies, analytics, or third-party tracking. Messages sent through the contact form "
+             "are delivered to the salon by email via Web3Forms (web3forms.com) and are not stored on this site.", ""]
 
     categories = ", ".join(block["name"].lower() for kind, block in blocks if kind == "group")
     short = f"""# {b['alternateName']}
